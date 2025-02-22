@@ -12,7 +12,7 @@ export default function DotGrid({ total, remaining, percentage, description }: D
   const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
 
   // Smaller margins for daily/weekly views
-  const margin = total <= 24 ? 5 : 10;
+  const margin = total <= 24 ? 2 : 10;
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
@@ -60,13 +60,15 @@ export default function DotGrid({ total, remaining, percentage, description }: D
     );
   });
 
-  // Calculate grid width based on square size and margins
-  const gridWidth = `${(70 + (margin * 2)) * columns}vmin`;
+  // Calculate grid container width based on squares
+  const gridContainerStyle = {
+    width: `${(70 + margin * 2) * columns / columns}vmin`,
+  };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div style={{ width: gridWidth }}>
-        <div className="flex justify-between items-center mb-8">
+    <div className="flex flex-col items-center">
+      <div style={gridContainerStyle}>
+        <div className="flex justify-between items-center mb-4">
           <div className="text-2xl font-light text-gray-400">
             {percentage}% left
           </div>
