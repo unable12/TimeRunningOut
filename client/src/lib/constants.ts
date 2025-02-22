@@ -1,0 +1,22 @@
+export const YEARLY_QUOTES = [
+  "today doesn't care about your excuses. move.",
+  "every wasted day is a step closer to failure.",
+  "someone else is winning today. what's your excuse?",
+  "time doesn't stop. neither should you.",
+  "no one remembers the days you wasted.",
+  "you're not busy. you're stalling.",
+  "if today slips away, that's on you.",
+  "while you think, someone else is acting.",
+  "stop waiting. the clock isn't slowing down.",
+  "another day gone. what do you have to show for it?",
+  "nobody cares if you're tired. show up anyway.",
+  "hesitation is expensive. today's the price.",
+  "tomorrow won't wait. neither should you.",
+  "time's ruthless. catch up or fall behind.",
+  "excuses don't buy extra days.",
+  "you said \"tomorrow\" yesterday. today's the deadline.",
+  "comfort kills ambition. attack the day.",
+  "days disappear. results don't.",
+  "the clock's winning. fight back.",
+  "no one's coming to save your day. it's on you."
+];

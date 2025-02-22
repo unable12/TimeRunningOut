@@ -5,9 +5,10 @@ interface DotGridProps {
   remaining: number;
   percentage: number;
   description: string;
+  quote?: string;
 }
 
-export default function DotGrid({ total, remaining, percentage, description }: DotGridProps) {
+export default function DotGrid({ total, remaining, percentage, description, quote }: DotGridProps) {
   // Adjust grid layout based on total items
   const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
 
@@ -84,6 +85,16 @@ export default function DotGrid({ total, remaining, percentage, description }: D
         >
           {dots}
         </div>
+        {quote && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 text-white/80 text-lg text-center font-light uppercase tracking-wide"
+          >
+            {quote}
+          </motion.div>
+        )}
       </div>
     </div>
   );
