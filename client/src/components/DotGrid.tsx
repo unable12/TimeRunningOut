@@ -11,6 +11,9 @@ export default function DotGrid({ total, remaining, percentage, description }: D
   // Adjust grid layout based on total items
   const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
 
+  // Smaller margins for daily/weekly views
+  const margin = total <= 24 ? 5 : 10;
+
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
     const partialSquareIndex = total - Math.floor(remaining) - 1;
@@ -30,7 +33,7 @@ export default function DotGrid({ total, remaining, percentage, description }: D
           style={{
             width: `${70 / columns}vmin`,
             height: `${70 / columns}vmin`,
-            margin: `${10 / columns}vmin`,
+            margin: `${margin / columns}vmin`,
           }}
         >
           <div 
@@ -50,30 +53,35 @@ export default function DotGrid({ total, remaining, percentage, description }: D
         style={{
           width: `${70 / columns}vmin`,
           height: `${70 / columns}vmin`,
-          margin: `${10 / columns}vmin`,
+          margin: `${margin / columns}vmin`,
           opacity
         }}
       />
     );
   });
 
+  // Calculate grid width based on square size and margins
+  const gridWidth = `${(70 + (margin * 2)) * columns}vmin`;
+
   return (
-    <div className="w-full px-8">
-      <div className="flex justify-between items-center mb-8">
-        <div className="text-2xl font-light text-gray-400">
-          {percentage}% left
+    <div className="w-full flex flex-col items-center">
+      <div style={{ width: gridWidth }}>
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-2xl font-light text-gray-400">
+            {percentage}% left
+          </div>
+          <div className="text-lg text-gray-500">
+            {description}
+          </div>
         </div>
-        <div className="text-lg text-gray-500">
-          {description}
+        <div 
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          }}
+        >
+          {dots}
         </div>
-      </div>
-      <div 
-        className="grid"
-        style={{
-          gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        }}
-      >
-        {dots}
       </div>
     </div>
   );
