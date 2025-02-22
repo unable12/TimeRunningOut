@@ -6,13 +6,23 @@ interface TimeViewProps {
 }
 
 export default function TimeView({ view }: TimeViewProps) {
-  const { total, remaining, percentage } = useTimeCalculations(view);
+  const { total, remaining, percentage, description } = useTimeCalculations(view);
 
   return (
     <div className="h-full flex flex-col items-center justify-center p-4">
+      <h2 className="text-2xl font-semibold mb-4">
+        {view === 'year' && 'This Year'}
+        {view === 'week' && 'This Week'}
+        {view === 'day' && 'Today'}
+      </h2>
       <DotGrid total={total} remaining={remaining} />
-      <div className="mt-8 text-2xl font-light">
-        {percentage}% left
+      <div className="mt-8 space-y-2 text-center">
+        <div className="text-2xl font-light">
+          {percentage}% left
+        </div>
+        <div className="text-lg text-[#FFA500]/80">
+          {description}
+        </div>
       </div>
     </div>
   );

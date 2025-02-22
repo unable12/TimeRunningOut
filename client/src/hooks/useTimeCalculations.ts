@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useSettings } from './useSettings';
 import { 
   startOfYear, 
   endOfYear, 
   startOfWeek, 
   endOfWeek, 
-  differenceInDays, 
+  differenceInDays,
   differenceInHours,
   getHours,
   format 
 } from 'date-fns';
 
 export function useTimeCalculations(view: 'year' | 'week' | 'day') {
-  const { settings } = useSettings();
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -26,35 +24,28 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
       const end = endOfYear(now);
       const total = differenceInDays(end, start) + 1;
       const remaining = differenceInDays(end, now) + 1;
-      return { total, remaining };
+      const description = `${remaining} days remaining in ${format(now, 'yyyy')}`;
+      return { total, remaining, description };
     },
     week: () => {
-      const weekStartsOn = settings.weekStart === 'monday' ? 1 : 0;
-      const start = startOfWeek(now, { weekStartsOn });
-      const end = endOfWeek(now, { weekStartsOn });
+      const start = startOfWeek(now, { weekStartsOn: 1 }); // Monday start
+      const end = endOfWeek(now, { weekStartsOn: 1 });
       const total = 7;
       const remaining = differenceInDays(end, now) + 1;
-      return { total, remaining };
+      const description = `${remaining} days left this week`;
+      return { total, remaining, description };
     },
     day: () => {
       const currentHour = getHours(now);
       const total = 24;
-      const remaining = total - currentHour;
-
-      if (settings.timeFormat === '12h') {
-        const hour12 = parseInt(format(now, 'h'));
-        return {
-          total: 12,
-          remaining: 12 - (hour12 === 12 ? 0 : hour12)
-        };
-      }
-
-      return { total, remaining };
+      const remaining = 24 - currentHour;
+      const description = `${remaining} hours left today`;
+      return { total, remaining, description };
     }
   };
 
-  const { total, remaining } = calculations[view]();
+  const { total, remaining, description } = calculations[view]();
   const percentage = Math.round((remaining / total) * 100);
 
-  return { total, remaining, percentage };
+  return { total, remaining, percentage, description };
 }

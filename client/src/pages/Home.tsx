@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimeView from '@/components/TimeView';
-import Settings from '@/components/Settings';
-import { Settings as SettingsIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const views = ['year', 'week', 'day'] as const;
 type View = typeof views[number];
@@ -41,18 +37,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-[#FFA500] flex flex-col font-[Inter]">
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Time Is Running Out</h1>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <SettingsIcon className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent>
-            <Settings />
-          </SheetContent>
-        </Sheet>
+      <header className="p-4">
+        <h1 className="text-xl font-semibold text-center">Time Is Running Out</h1>
       </header>
 
       <main 
