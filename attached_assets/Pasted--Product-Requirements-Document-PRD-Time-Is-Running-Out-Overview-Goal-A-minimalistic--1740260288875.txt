@@ -1,0 +1,83 @@
+# Product Requirements Document (PRD)
+
+## Time Is Running Out
+
+## Overview
+**Goal:** A minimalistic iOS app that visually shows how much time is left in a year, week, and day, using swipe navigation and widgets. The design is black and orange, with no user authentication or data collection.
+
+## Core Features
+1. **Main Screens:**
+   - **Year Screen:** Displays remaining days in the current calendar year as orange dots with a percentage at the bottom.
+   - **Week Screen:** Displays remaining days in the current week (Monday-Sunday) as orange dots with a percentage.
+   - **Day Screen:** Displays remaining hours in the current day as orange dots with a percentage.
+2. **Navigation:**
+   - Swipe horizontally between the year, week, and day screens (Tinder-style).
+   - No back or forward buttons.
+3. **Widgets:**
+   - **Small Widget:** Displays the remaining percentage of the day.
+   - **Medium Widget:** Displays the remaining percentages of the day and week.
+   - **Large Widget:** Displays the remaining percentages of the day, week, and year.
+   - Widgets can be shown in two styles: Dots or Bars.
+     - **Dots Style:** Similar to the main screens with orange dots.
+     - **Bars Style:** Horizontal or vertical bars showing remaining time.
+
+## User Experience
+- **Swipe Sensitivity:** Fast, fluid, and responsive swiping similar to Tinder.
+- **Haptics:** Light haptic feedback when switching screens.
+- **Widgets Interaction:** Tapping a widget opens the corresponding screen in the app.
+
+## Design Requirements
+- **Color Palette:**
+  - Background: Black (#000000)
+  - Dots, Bars, and Text: Orange (#FFA500)
+- **Typography:**
+  - Font: SF Pro Display (or Inter)
+  - Minimalistic text at the bottom (e.g., "41% left")
+- **Layout:**
+  - Responsive and optimized for different iPhone models
+  - Dot sizes adjust to screen size
+
+## Calculations
+- **Year:** Days left until December 31 (inclusive)
+- **Week:** Days left until Sunday (inclusive)
+- **Day:** Hours left until midnight
+- Leap years are accounted for.
+- Uses the user's local time zone.
+
+## Notifications
+- **Frequency:** Once a day at a random time
+- **Tone:** Bold, semi-aggressive, and motivating
+- **Example Notifications:**
+  - Wake up. Time’s ticking. Don’t waste today.
+  - Half the day is gone. What have you done?
+  - 4 PM: Decision time—finish strong or coast?
+  - Day’s almost over. What did you actually achieve?
+
+## Settings
+- **Minimal Options:**
+  - Toggle between 12-hour and 24-hour time formats
+  - Choose Sunday or Monday as the start of the week
+  - Select widget style: Dots or Bars
+
+## Privacy
+- **No Authentication:** No user accounts
+- **Zero Data Collection:** No external data sharing or analytics
+- **No Ads:** The app is free and ad-free
+
+## Platform and Compatibility
+- **Platform:** iOS, optimized for the latest version
+- **Widgets:** Compatible with iOS 16 and above
+- **Performance:** Lightweight, low battery consumption
+
+## Edge Cases
+- Leap years (Feb 29)
+- Different time zones
+- Rare app usage (widgets should still update correctly)
+
+## Future Enhancements (Not in MVP)
+- Custom countdowns for personal events
+- Light mode
+- Additional colors for dots and bars
+
+## Summary
+Time Is Running Out is a simple, visually striking app designed to motivate users by showing the limited time they have left in a year, week, and day. With minimal settings, swipe navigation, and daily notifications, it delivers a direct, no-frills experience to help users stay aware of time's passing. Widgets with dots and bars provide quick reminders right on the home screen, ensuring that the message is clear: Time is running out—make the most of it.
