@@ -37,10 +37,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-[#FFA500] flex flex-col font-[Inter]">
-      <header className="p-4">
-        <h1 className="text-xl font-semibold text-center">Time Is Running Out</h1>
-      </header>
-
       <main 
         className="flex-1 touch-none"
         onTouchStart={handleDragStart}
