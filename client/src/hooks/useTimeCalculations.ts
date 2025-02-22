@@ -6,6 +6,7 @@ import {
   endOfWeek, 
   differenceInDays,
   differenceInHours,
+  differenceInMinutes,
   getHours,
   format,
   getDaysInYear
@@ -26,24 +27,30 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
       const totalDays = getDaysInYear(now);
       const dayOfYear = differenceInDays(now, start) + 1;
       const remaining = totalDays - dayOfYear + 1;
+      const partialDay = 1 - (now.getHours() * 60 + now.getMinutes()) / (24 * 60);
+      const remainingExact = remaining - 1 + partialDay;
       const description = `${remaining} days remaining in ${format(now, 'yyyy')} (Day ${dayOfYear} of ${totalDays})`;
-      return { total: totalDays, remaining, description };
+      return { total: totalDays, remaining: remainingExact, description };
     },
     week: () => {
       const start = startOfWeek(now, { weekStartsOn: 1 }); // Monday start
       const end = endOfWeek(now, { weekStartsOn: 1 });
       const total = 7;
-      const remaining = differenceInDays(end, now) + 1;
+      const daysGone = differenceInDays(now, start);
+      const partialDay = 1 - (now.getHours() * 60 + now.getMinutes()) / (24 * 60);
+      const remaining = total - daysGone - 1 + partialDay;
       const currentDay = format(now, 'EEEE');
-      const description = `${remaining} days left this week (${currentDay})`;
+      const description = `${Math.ceil(remaining)} days left this week (${currentDay})`;
       return { total, remaining, description };
     },
     day: () => {
       const currentHour = getHours(now);
       const total = 24;
-      const remaining = 24 - currentHour;
+      const minutesInCurrentHour = now.getMinutes();
+      const partialHour = 1 - (minutesInCurrentHour / 60);
+      const remaining = 24 - currentHour - 1 + partialHour;
       const currentTime = format(now, 'HH:mm');
-      const description = `${remaining} hours left today (${currentTime})`;
+      const description = `${Math.ceil(remaining)} hours left today (${currentTime})`;
       return { total, remaining, description };
     }
   };
