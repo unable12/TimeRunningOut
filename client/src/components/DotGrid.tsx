@@ -6,7 +6,8 @@ interface DotGridProps {
 }
 
 export default function DotGrid({ total, remaining }: DotGridProps) {
-  const size = Math.ceil(Math.sqrt(total));
+  // Adjust grid layout based on total items
+  const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const isActive = i < remaining;
@@ -17,9 +18,9 @@ export default function DotGrid({ total, remaining }: DotGridProps) {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         style={{
-          width: `${70 / size}vmin`,
-          height: `${70 / size}vmin`,
-          margin: `${15 / size}vmin`,
+          width: `${60 / columns}vmin`,
+          height: `${60 / columns}vmin`,
+          margin: `${10 / columns}vmin`,
         }}
       />
     );
@@ -27,9 +28,9 @@ export default function DotGrid({ total, remaining }: DotGridProps) {
 
   return (
     <div 
-      className="grid gap-2 px-12"
+      className="grid px-16"
       style={{
-        gridTemplateColumns: `repeat(${size}, 1fr)`,
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
       }}
     >
       {dots}

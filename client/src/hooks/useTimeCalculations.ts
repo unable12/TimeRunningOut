@@ -7,7 +7,8 @@ import {
   differenceInDays,
   differenceInHours,
   getHours,
-  format 
+  format,
+  getDaysInYear
 } from 'date-fns';
 
 export function useTimeCalculations(view: 'year' | 'week' | 'day') {
@@ -22,10 +23,11 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
     year: () => {
       const start = startOfYear(now);
       const end = endOfYear(now);
-      const total = differenceInDays(end, start) + 1;
-      const remaining = differenceInDays(end, now) + 1;
-      const description = `${remaining} days remaining in ${format(now, 'yyyy')}`;
-      return { total, remaining, description };
+      const totalDays = getDaysInYear(now);
+      const dayOfYear = differenceInDays(now, start) + 1;
+      const remaining = totalDays - dayOfYear + 1;
+      const description = `${remaining} days remaining in ${format(now, 'yyyy')} (Day ${dayOfYear} of ${totalDays})`;
+      return { total: totalDays, remaining, description };
     },
     week: () => {
       const start = startOfWeek(now, { weekStartsOn: 1 }); // Monday start
