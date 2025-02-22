@@ -21,7 +21,6 @@ export default function DotGrid({ total, remaining, percentage, description }: D
     } else if (i === partialSquareIndex) {
       // Calculate partial fill for the current square
       const partialFill = (remaining % 1);
-      const height = `${partialFill * 100}%`;
       return (
         <motion.div
           key={i}
@@ -36,7 +35,7 @@ export default function DotGrid({ total, remaining, percentage, description }: D
         >
           <div 
             className="absolute bottom-0 left-0 right-0 bg-[#FFA500]"
-            style={{ height }}
+            style={{ height: `${partialFill * 100}%` }}
           />
         </motion.div>
       );
