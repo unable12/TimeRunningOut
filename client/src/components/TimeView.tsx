@@ -10,17 +10,7 @@ export default function TimeView({ view }: TimeViewProps) {
 
   return (
     <div className="h-full flex flex-col items-center justify-center p-4">
-      <div className="w-full px-8 mb-8">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-light text-gray-400">
-            {percentage}% left
-          </div>
-          <div className="text-lg text-gray-500">
-            {description}
-          </div>
-        </div>
-      </div>
-      <DotGrid total={total} remaining={remaining} />
+      <DotGrid total={total} remaining={remaining} percentage={percentage} description={description} />
     </div>
   );
 }
