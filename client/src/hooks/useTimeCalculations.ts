@@ -21,9 +21,19 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
   }, []);
 
   const formatTimeRemaining = (value: number, unit: string) => {
-    if (value >= 2) return `${Math.floor(value)} ${unit}s left`;
-    if (value >= 1) return `${value.toFixed(1)} ${unit}s left`;
-    return `${(value * (unit === 'day' ? 24 : 60)).toFixed(1)} ${unit === 'day' ? 'hours' : 'minutes'} left`;
+    if (unit === 'day') {
+      const days = Math.floor(value);
+      const remainingHours = Math.floor((value - days) * 24);
+      if (days >= 1) {
+        return `${days} day${days !== 1 ? 's' : ''} and ${remainingHours} hour${remainingHours !== 1 ? 's' : ''} left`;
+      }
+      return `${remainingHours} hours left`;
+    } else if (unit === 'hour') {
+      const hours = Math.floor(value);
+      const remainingMinutes = Math.floor((value - hours) * 60);
+      return `${hours} hour${hours !== 1 ? 's' : ''} and ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''} left`;
+    }
+    return `${Math.floor(value)} ${unit}s left`;
   };
 
   const calculations = {
