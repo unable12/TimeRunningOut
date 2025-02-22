@@ -32,14 +32,16 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
       const end = endOfWeek(now, { weekStartsOn: 1 });
       const total = 7;
       const remaining = differenceInDays(end, now) + 1;
-      const description = `${remaining} days left this week`;
+      const currentDay = format(now, 'EEEE');
+      const description = `${remaining} days left this week (${currentDay})`;
       return { total, remaining, description };
     },
     day: () => {
       const currentHour = getHours(now);
       const total = 24;
       const remaining = 24 - currentHour;
-      const description = `${remaining} hours left today`;
+      const currentTime = format(now, 'HH:mm');
+      const description = `${remaining} hours left today (${currentTime})`;
       return { total, remaining, description };
     }
   };

@@ -13,7 +13,7 @@ export default function DotGrid({ total, remaining }: DotGridProps) {
     return (
       <motion.div
         key={i}
-        className={`rounded-full ${isActive ? 'bg-[#FFA500]' : 'bg-[#FFA500]/20'}`}
+        className={`${isActive ? 'bg-[#FFA500]' : 'bg-[#FFA500]/20'}`}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         style={{
@@ -27,7 +27,7 @@ export default function DotGrid({ total, remaining }: DotGridProps) {
 
   return (
     <div 
-      className="grid gap-2 p-8"
+      className="grid gap-2 px-12"
       style={{
         gridTemplateColumns: `repeat(${size}, 1fr)`,
       }}
