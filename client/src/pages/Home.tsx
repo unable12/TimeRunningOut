@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimeView from '@/components/TimeView';
 import Settings from '@/components/Settings';
-import { Settings as cog } from 'lucide-react';
+import { Settings as SettingsIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -12,13 +12,17 @@ type View = typeof views[number];
 export default function Home() {
   const [currentView, setCurrentView] = useState<View>('year');
   const [dragStart, setDragStart] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     setDragStart(clientX);
+    setIsDragging(true);
   };
 
   const handleDragEnd = (event: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging) return;
+
     const clientX = 'changedTouches' in event ? event.changedTouches[0].clientX : event.clientX;
     const delta = dragStart - clientX;
 
@@ -32,6 +36,7 @@ export default function Home() {
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       }
     }
+    setIsDragging(false);
   };
 
   return (
@@ -41,7 +46,7 @@ export default function Home() {
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
-              <cog className="h-6 w-6" />
+              <SettingsIcon className="h-6 w-6" />
             </Button>
           </SheetTrigger>
           <SheetContent>
@@ -63,7 +68,11 @@ export default function Home() {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 300,
+              damping: 30
+            }}
             className="h-full"
           >
             <TimeView view={currentView} />

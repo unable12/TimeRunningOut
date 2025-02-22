@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useSettings } from './useSettings';
-import { startOfYear, endOfYear, startOfWeek, endOfWeek, differenceInDays, differenceInHours, format } from 'date-fns';
+import { 
+  startOfYear, 
+  endOfYear, 
+  startOfWeek, 
+  endOfWeek, 
+  differenceInDays, 
+  differenceInHours,
+  getHours,
+  format 
+} from 'date-fns';
 
 export function useTimeCalculations(view: 'year' | 'week' | 'day') {
   const { settings } = useSettings();
@@ -20,17 +29,26 @@ export function useTimeCalculations(view: 'year' | 'week' | 'day') {
       return { total, remaining };
     },
     week: () => {
-      const weekOptions = { weekStartsOn: settings.weekStart === 'monday' ? 1 : 0 };
-      const start = startOfWeek(now, weekOptions);
-      const end = endOfWeek(now, weekOptions);
+      const weekStartsOn = settings.weekStart === 'monday' ? 1 : 0;
+      const start = startOfWeek(now, { weekStartsOn });
+      const end = endOfWeek(now, { weekStartsOn });
       const total = 7;
       const remaining = differenceInDays(end, now) + 1;
       return { total, remaining };
     },
     day: () => {
-      const total = settings.timeFormat === '24h' ? 24 : 12;
-      const hour = parseInt(format(now, settings.timeFormat === '24h' ? 'H' : 'h'));
-      const remaining = total - hour;
+      const currentHour = getHours(now);
+      const total = 24;
+      const remaining = total - currentHour;
+
+      if (settings.timeFormat === '12h') {
+        const hour12 = parseInt(format(now, 'h'));
+        return {
+          total: 12,
+          remaining: 12 - (hour12 === 12 ? 0 : hour12)
+        };
+      }
+
       return { total, remaining };
     }
   };
