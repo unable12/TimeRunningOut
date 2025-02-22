@@ -69,10 +69,10 @@ export default function DotGrid({ total, remaining, percentage, description }: D
     <div className="flex flex-col items-center">
       <div style={gridContainerStyle}>
         <div className="flex justify-between items-center mb-4">
-          <div className="text-2xl font-light text-gray-400">
+          <div className="text-2xl text-white/90">
             {percentage}% left
           </div>
-          <div className="text-lg text-gray-500">
+          <div className="text-2xl text-white/90">
             {description}
           </div>
         </div>

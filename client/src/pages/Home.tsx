@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimeView from '@/components/TimeView';
 
@@ -34,6 +34,23 @@ export default function Home() {
     }
     setIsDragging(false);
   };
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const currentIndex = views.indexOf(currentView);
+      if (event.key === 'ArrowLeft' && currentIndex > 0) {
+        setCurrentView(views[currentIndex - 1]);
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
+      } else if (event.key === 'ArrowRight' && currentIndex < views.length - 1) {
+        setCurrentView(views[currentIndex + 1]);
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentView]);
 
   return (
     <div className="min-h-screen bg-black text-[#FFA500] flex flex-col font-[Inter]">
