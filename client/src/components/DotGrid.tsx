@@ -54,11 +54,12 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     const partialSquareIndex = total - Math.floor(remaining) - 1;
     const label = getLabel(i);
     const monthLetter = getMonthLetter(i);
+    const isCurrentTimeBlock = i === partialSquareIndex;
 
     let opacity = '0.2'; // default for used time
     if (i >= total - Math.floor(remaining)) {
       opacity = '1'; // future time
-    } else if (i === partialSquareIndex) {
+    } else if (isCurrentTimeBlock) {
       // Calculate partial fill for the current square
       const partialFill = (remaining % 1);
       return (
@@ -82,8 +83,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           />
           {label && (
             <div
-              className={`absolute top-1 left-1 text-black font-bold z-10 ${view === 'week' ? 'text-lg' : 'text-sm'}`}
-              style={{ textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)' }}
+              className={`absolute top-1 left-1 text-black z-10 ${
+                view === 'week' ? 'text-lg' : 'text-sm'
+              } font-normal`}
+              style={{ 
+                textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)',
+                fontFamily: 'SF Pro Display, system-ui'
+              }}
             >
               {label}
             </div>
@@ -110,8 +116,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
         )}
         {label && (
           <div
-            className={`absolute top-1 left-1 text-black font-bold z-10 ${view === 'week' ? 'text-lg' : 'text-sm'}`}
-            style={{ textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)' }}
+            className={`absolute top-1 left-1 text-black z-10 ${
+              view === 'week' ? 'text-lg' : 'text-sm'
+            } font-bold`}
+            style={{ 
+              textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)',
+              fontFamily: 'SF Pro Display, system-ui'
+            }}
           >
             {label}
           </div>
