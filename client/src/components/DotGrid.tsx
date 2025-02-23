@@ -150,8 +150,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                   className="absolute bg-white/30"
                   style={{
                     height: '1px',
-                    width: separator.isEndOfRow
-                      ? '100%'
+                    width: separator.isEndOfRow 
+                      ? '100%' 
                       : `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`,
                     top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
                     left: 0
