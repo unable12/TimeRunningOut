@@ -36,13 +36,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     let cumulativeDays = 0;
     const currentDate = new Date(2025, 0, 1); // Start with January 2025
 
-    // Calculate positions for each month
     for (let month = 0; month < 12; month++) {
       const daysInMonth = getDaysInMonth(currentDate);
       cumulativeDays += daysInMonth;
 
       // Don't add separator after December
       if (month < 11) {
+        // Position is right after the last day of the current month
         const lastDayPosition = cumulativeDays - 1;
         const row = Math.floor(lastDayPosition / columns);
         const col = lastDayPosition % columns;
