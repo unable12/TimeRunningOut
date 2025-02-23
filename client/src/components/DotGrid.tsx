@@ -38,23 +38,27 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     if (view !== 'year') return [];
 
     const monthData = [];
-    let currentPosition = 0;
+    let dayCount = 0;
     const startDate = startOfYear(new Date());
 
+    // Calculate positions for each month
     for (let month = 0; month < 12; month++) {
-      const daysInMonth = getDaysInMonth(addMonths(startDate, month));
-      currentPosition += daysInMonth;
+      const daysInCurrentMonth = getDaysInMonth(addMonths(startDate, month));
+      dayCount += daysInCurrentMonth;
 
       if (month < 11) { // Don't add separator after December
-        const row = Math.floor((currentPosition - 1) / columns);
-        const col = (currentPosition - 1) % columns;
+        const position = dayCount - 1; // Position at the last day of current month
+        const row = Math.floor(position / columns);
+        const col = position % columns;
         const monthName = format(addMonths(startDate, month + 1), 'MMM');
 
         monthData.push({
+          position,
           row,
           col,
           isEndOfRow: col === columns - 1,
-          monthName
+          monthName,
+          daysInMonth: daysInCurrentMonth
         });
       }
     }
@@ -151,7 +155,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                 <div
                   className="absolute text-white/30 text-xs"
                   style={{
-                    top: `calc(${(data.row + 1) * 100 / columns}% - 1rem)`,
+                    top: `calc(${data.row * 100 / columns}% + ${squareMargin})`,
                     left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
                     transform: 'translateX(-50%)',
                   }}
@@ -159,7 +163,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                   {data.monthName}
                 </div>
 
-                {/* Horizontal line at the bottom of the row */}
+                {/* Horizontal line after the last day of the month */}
                 <div
                   className="absolute bg-white/30"
                   style={{
@@ -167,20 +171,20 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                     width: data.isEndOfRow 
                       ? '100%' 
                       : `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
-                    top: `calc(${(data.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
+                    top: `calc(${data.row * 100 / columns}% + ${70 / columns}vmin + ${margin * 2 / columns}vmin)`,
                     left: 0
                   }}
                 />
 
-                {/* Vertical drop if month ends mid-row */}
+                {/* Vertical line if month doesn't end at row end */}
                 {!data.isEndOfRow && (
                   <div
                     className="absolute bg-white/30"
                     style={{
                       width: '1px',
                       height: `calc(${100 / columns}% + ${squareMargin})`,
-                      top: `calc(${(data.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
-                      left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
+                      top: `calc(${data.row * 100 / columns}% + ${70 / columns}vmin + ${margin * 2 / columns}vmin)`,
+                      left: `calc(${(data.col + 1) * 100 / columns}% + ${margin / columns}vmin)`
                     }}
                   />
                 )}
@@ -191,9 +195,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                     className="absolute bg-white/30"
                     style={{
                       height: '1px',
-                      width: `calc(100% - ${((data.col + 1) * 100 / columns)}% - ${squareMargin} / 2)`,
-                      top: `calc(${(data.row + 2) * 100 / columns}% + ${squareMargin} / 2)`,
-                      left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
+                      width: `calc(100% - ${(data.col + 1) * 100 / columns}% - ${margin / columns}vmin)`,
+                      top: `calc(${(data.row + 1) * 100 / columns}% + ${margin / columns}vmin)`,
+                      left: `calc(${(data.col + 1) * 100 / columns}% + ${margin / columns}vmin)`
                     }}
                   />
                 )}
