@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, getDaysInMonth, startOfYear, addMonths } from 'date-fns';
 
 interface DotGridProps {
   total: number;
@@ -32,6 +32,28 @@ export default function DotGrid({ total, remaining, percentage, description, quo
       ? `${baseStyle} text-lg` // 70% larger for week view
       : `${baseStyle} text-sm`; // Original size for day view
   };
+
+  // Calculate month separator positions for year view
+  const getMonthSeparatorPositions = (): number[] => {
+    if (view !== 'year') return [];
+
+    const positions: number[] = [];
+    let currentPosition = 0;
+    const year = new Date().getFullYear();
+    const startDate = startOfYear(new Date());
+
+    for (let month = 0; month < 12; month++) {
+      const daysInMonth = getDaysInMonth(addMonths(startDate, month));
+      currentPosition += daysInMonth;
+      if (month < 11) { // Don't add separator after December
+        positions.push(currentPosition);
+      }
+    }
+
+    return positions;
+  };
+
+  const monthSeparators = getMonthSeparatorPositions();
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
@@ -103,13 +125,28 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {description}
           </div>
         </div>
-        <div 
-          className="grid"
-          style={{
-            gridTemplateColumns: `repeat(${columns}, 1fr)`,
-          }}
-        >
-          {dots}
+        <div className="relative">
+          <div 
+            className="grid relative"
+            style={{
+              gridTemplateColumns: `repeat(${columns}, 1fr)`,
+            }}
+          >
+            {dots}
+            {view === 'year' && monthSeparators.map((position, index) => (
+              <div
+                key={`separator-${index}`}
+                className="absolute w-full bg-[#262626]"
+                style={{
+                  height: '1px',
+                  top: `${(position / columns) * (70 + margin * 2) / columns}vmin`,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1
+                }}
+              />
+            ))}
+          </div>
         </div>
         {quote && (
           <div className="mt-4 text-white/80 text-2xl text-center font-light uppercase tracking-[0.2em] w-full">
