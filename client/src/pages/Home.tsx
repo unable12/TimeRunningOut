@@ -9,6 +9,7 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<View>('year');
   const [dragStart, setDragStart] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [direction, setDirection] = useState(0);
 
   const handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
@@ -25,9 +26,11 @@ export default function Home() {
     if (Math.abs(delta) > 50) {
       const currentIndex = views.indexOf(currentView);
       if (delta > 0) { // Swipe left
+        setDirection(1);
         setCurrentView(currentIndex === views.length - 1 ? views[0] : views[currentIndex + 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       } else { // Swipe right
+        setDirection(-1);
         setCurrentView(currentIndex === 0 ? views[views.length - 1] : views[currentIndex - 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       }
@@ -40,9 +43,11 @@ export default function Home() {
     const handleKeyDown = (event: KeyboardEvent) => {
       const currentIndex = views.indexOf(currentView);
       if (event.key === 'ArrowLeft') {
+        setDirection(-1);
         setCurrentView(currentIndex === 0 ? views[views.length - 1] : views[currentIndex - 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       } else if (event.key === 'ArrowRight') {
+        setDirection(1);
         setCurrentView(currentIndex === views.length - 1 ? views[0] : views[currentIndex + 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       }
@@ -64,9 +69,9 @@ export default function Home() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentView}
-            initial={{ opacity: 0, x: 100 }}
+            initial={{ opacity: 0, x: direction * 100 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
+            exit={{ opacity: 0, x: -direction * 100 }}
             transition={{ 
               type: "spring",
               stiffness: 300,
@@ -74,7 +79,7 @@ export default function Home() {
             }}
             className="h-full"
           >
-            <TimeView view={currentView} />
+            <TimeView view={currentView} direction={direction} />
           </motion.div>
         </AnimatePresence>
       </main>

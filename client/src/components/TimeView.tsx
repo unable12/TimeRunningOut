@@ -5,9 +5,10 @@ import { YEARLY_QUOTES, WEEKLY_QUOTES, DAILY_QUOTES } from '@/lib/constants';
 
 interface TimeViewProps {
   view: 'year' | 'week' | 'day';
+  direction: number;
 }
 
-export default function TimeView({ view }: TimeViewProps) {
+export default function TimeView({ view, direction }: TimeViewProps) {
   const { total, remaining, percentage, description } = useTimeCalculations(view);
   const [quote, setQuote] = useState<string>('');
 
@@ -36,6 +37,8 @@ export default function TimeView({ view }: TimeViewProps) {
         percentage={percentage} 
         description={description}
         quote={quote}
+        view={view}
+        direction={direction}
       />
     </div>
   );
