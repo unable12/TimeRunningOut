@@ -113,7 +113,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
-          <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
+          <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white !opacity-100 px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
             {getTooltipText(i)}
           </div>
         </div>
@@ -123,14 +123,17 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return (
       <div
         key={i}
-        className="relative bg-[#FFA500] group"
+        className="relative group"
         style={{
           width: squareSize,
           height: squareSize,
           margin: squareMargin,
-          opacity
         }}
       >
+        <div 
+          className="absolute inset-0 bg-[#FFA500]"
+          style={{ opacity }}
+        />
         {monthLetter && (
           <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
             {monthLetter}
@@ -140,7 +143,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           <div
             className={`absolute top-1 left-1 text-black z-10 ${
               view === 'week' ? 'text-lg' : 'text-sm'
-            } ${isPastTimeBlock ? 'font-normal' : 'font-bold'}`}
+            } font-normal`}
             style={{ 
               fontFamily: 'SF Pro Display, system-ui'
             }}
@@ -148,7 +151,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {label}
           </div>
         )}
-        <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
+        <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white !opacity-100 px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
           {getTooltipText(i)}
         </div>
       </div>
