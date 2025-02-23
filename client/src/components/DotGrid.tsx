@@ -90,7 +90,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-8 text-white/80 text-lg text-center font-light uppercase tracking-wide"
+            className="mt-8 text-white/80 text-lg text-center font-light uppercase tracking-wide w-full"
           >
             {quote}
           </motion.div>

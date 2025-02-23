@@ -20,3 +20,49 @@ export const YEARLY_QUOTES = [
   "the clock's winning. fight back.",
   "no one's coming to save your day. it's on you."
 ];
+
+export const WEEKLY_QUOTES = [
+  "every day is a deadline. meet it.",
+  "days don't wait. neither should you.",
+  "you're running out of days. act now.",
+  "no one remembers the days you wasted.",
+  "every wasted day is a step closer to failure.",
+  "while you wait, days disappear.",
+  "success is built daily. start today.",
+  "each day gone is a chance lost.",
+  "time doesn't stop. neither should you.",
+  "excuses don't buy extra days.",
+  "the clock doesn't care what day it is. move.",
+  "someone else is winning today. what's your excuse?",
+  "days vanish. regret doesn't.",
+  "every day gone is a story untold. write yours.",
+  "another day slipped by. what did you do?",
+  "comfort kills ambition. attack the day.",
+  "today is proof that yesterday's excuses don't work.",
+  "hesitation costs days. speed up.",
+  "no one's coming to save your day. it's on you.",
+  "if you don't own today, you'll regret it tomorrow."
+];
+
+export const DAILY_QUOTES = [
+  "this hour won't wait. neither should you.",
+  "every hour gone is a chance lost.",
+  "someone else is using this hour. are you?",
+  "while you wait, this hour slips away.",
+  "the clock doesn't pause for your excuses.",
+  "hesitation costs hours. act now.",
+  "no one cares how tired you are. move.",
+  "time's ruthless. win the hour.",
+  "this hour is the price of success. pay it.",
+  "stop waiting. this hour's almost gone.",
+  "someone's using this hour to win. are you?",
+  "every wasted hour is a step backward.",
+  "the clock's faster than you. catch up.",
+  "this hour doesn't care about your plans. act.",
+  "delay burns hours. move faster.",
+  "stop stalling. the hour's fading.",
+  "this hour won't repeat. use it.",
+  "someone's making moves this hour. you should too.",
+  "time won't wait. this hour's proof.",
+  "another hour gone. what do you have to show?"
+];

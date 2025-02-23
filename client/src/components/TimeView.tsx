@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTimeCalculations } from '@/hooks/useTimeCalculations';
 import DotGrid from './DotGrid';
-import { YEARLY_QUOTES } from '@/lib/constants';
+import { YEARLY_QUOTES, WEEKLY_QUOTES, DAILY_QUOTES } from '@/lib/constants';
 
 interface TimeViewProps {
   view: 'year' | 'week' | 'day';
@@ -12,12 +12,20 @@ export default function TimeView({ view }: TimeViewProps) {
   const [quote, setQuote] = useState<string>('');
 
   useEffect(() => {
-    if (view === 'year') {
-      const randomIndex = Math.floor(Math.random() * YEARLY_QUOTES.length);
-      setQuote(YEARLY_QUOTES[randomIndex]);
-    } else {
-      setQuote('');
+    let quotes;
+    switch (view) {
+      case 'year':
+        quotes = YEARLY_QUOTES;
+        break;
+      case 'week':
+        quotes = WEEKLY_QUOTES;
+        break;
+      case 'day':
+        quotes = DAILY_QUOTES;
+        break;
     }
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    setQuote(quotes[randomIndex]);
   }, [view]);
 
   return (
