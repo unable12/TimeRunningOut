@@ -88,7 +88,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                 view === 'week' ? 'text-lg' : 'text-sm'
               } font-normal`}
               style={{ 
-                textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)',
                 fontFamily: 'SF Pro Display, system-ui'
               }}
             >
