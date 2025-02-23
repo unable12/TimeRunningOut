@@ -1,4 +1,4 @@
-import { format, getDaysInMonth, startOfYear, addMonths } from 'date-fns';
+import { format } from 'date-fns';
 
 interface DotGridProps {
   total: number;
@@ -27,44 +27,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     }
     return '';
   };
-
-  // Calculate month separator positions for year view
-  const getMonthData = () => {
-    if (view !== 'year') return [];
-
-    const monthData = [];
-    let cumulativeDays = 0;
-    const currentDate = new Date(2025, 0, 1); // Start with January 2025
-
-    for (let month = 0; month < 12; month++) {
-      const daysInMonth = getDaysInMonth(currentDate);
-      cumulativeDays += daysInMonth;
-
-      // Don't add separator after December
-      if (month < 11) {
-        // Position is right after the last day of the current month
-        const lastDayPosition = cumulativeDays - 1;
-        const row = Math.floor(lastDayPosition / columns);
-        const col = lastDayPosition % columns;
-
-        monthData.push({
-          position: lastDayPosition,
-          row,
-          col,
-          isEndOfRow: col === columns - 1,
-          monthName: format(addMonths(currentDate, 1), 'MMM'),
-          daysInMonth
-        });
-      }
-
-      // Move to next month
-      currentDate.setMonth(currentDate.getMonth() + 1);
-    }
-
-    return monthData;
-  };
-
-  const monthData = getMonthData();
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
@@ -139,60 +101,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             }}
           >
             {dots}
-            {view === 'year' && monthData.map((data, index) => (
-              <div key={`separator-${index}`} className="absolute" style={{ zIndex: 1 }}>
-                {/* Month name label */}
-                <div
-                  className="absolute text-white/30 text-xs"
-                  style={{
-                    top: `calc(${data.row * 100 / columns}% + ${squareMargin})`,
-                    left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
-                    transform: 'translateX(-50%)',
-                  }}
-                >
-                  {data.monthName}
-                </div>
-
-                {/* Horizontal line after the last day of the month */}
-                <div
-                  className="absolute bg-white/30"
-                  style={{
-                    height: '1px',
-                    width: data.isEndOfRow 
-                      ? '100%' 
-                      : `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
-                    top: `calc(${data.row * 100 / columns}% + ${70 / columns}vmin + ${margin * 2 / columns}vmin)`,
-                    left: 0
-                  }}
-                />
-
-                {/* Vertical line if month doesn't end at row end */}
-                {!data.isEndOfRow && (
-                  <div
-                    className="absolute bg-white/30"
-                    style={{
-                      width: '1px',
-                      height: `calc(${100 / columns}% + ${squareMargin})`,
-                      top: `calc(${data.row * 100 / columns}% + ${70 / columns}vmin + ${margin * 2 / columns}vmin)`,
-                      left: `calc(${(data.col + 1) * 100 / columns}% + ${margin / columns}vmin)`
-                    }}
-                  />
-                )}
-
-                {/* Horizontal line on next row if month ends mid-row */}
-                {!data.isEndOfRow && (
-                  <div
-                    className="absolute bg-white/30"
-                    style={{
-                      height: '1px',
-                      width: `calc(100% - ${(data.col + 1) * 100 / columns}% - ${margin / columns}vmin)`,
-                      top: `calc(${(data.row + 1) * 100 / columns}% + ${margin / columns}vmin)`,
-                      left: `calc(${(data.col + 1) * 100 / columns}% + ${margin / columns}vmin)`
-                    }}
-                  />
-                )}
-              </div>
-            ))}
           </div>
         </div>
         {quote && (
