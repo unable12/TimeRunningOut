@@ -25,27 +25,23 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return '';
   };
 
-  // Get month initial and full name if this square is the start of a month
-  const getMonthInfo = (index: number): { initial: string; fullName: string } | null => {
-    if (view !== 'year') return null;
+  // Get month initial if this square is the start of a month
+  const getMonthInitial = (index: number): string => {
+    if (view !== 'year') return '';
 
     // Array of cumulative days before each month in 2025
     const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     const monthInitials = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                       'July', 'August', 'September', 'October', 'November', 'December'];
 
     const monthIndex = monthStarts.indexOf(index);
-    return monthIndex >= 0 
-      ? { initial: monthInitials[monthIndex], fullName: monthNames[monthIndex] }
-      : null;
+    return monthIndex >= 0 ? monthInitials[monthIndex] : '';
   };
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
     const partialSquareIndex = total - Math.floor(remaining) - 1;
     const label = getLabel(i);
-    const monthInfo = getMonthInfo(i);
+    const monthInitial = getMonthInitial(i);
 
     let opacity = '0.2'; // default for used time
     if (i >= total - Math.floor(remaining)) {
@@ -63,10 +59,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             margin: squareMargin,
           }}
         >
-          {monthInfo && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-black text-lg font-bold">{monthInfo.initial}</span>
-              <span className="text-black text-xs">{monthInfo.fullName}</span>
+          {monthInitial && (
+            <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
+              {monthInitial}
             </div>
           )}
           {label && (
@@ -93,10 +88,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           opacity
         }}
       >
-        {monthInfo && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-black text-lg font-bold">{monthInfo.initial}</span>
-            <span className="text-black text-xs">{monthInfo.fullName}</span>
+        {monthInitial && (
+          <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
+            {monthInitial}
           </div>
         )}
         {label && (
