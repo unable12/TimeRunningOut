@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 
 interface DotGridProps {
@@ -8,10 +7,9 @@ interface DotGridProps {
   description: string;
   quote?: string;
   view: 'year' | 'week' | 'day';
-  direction: number; // -1 for previous, 1 for next
 }
 
-export default function DotGrid({ total, remaining, percentage, description, quote, view, direction }: DotGridProps) {
+export default function DotGrid({ total, remaining, percentage, description, quote, view }: DotGridProps) {
   // Adjust grid layout based on total items
   const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
 
@@ -40,13 +38,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
       // Calculate partial fill for the current square
       const partialFill = (remaining % 1);
       return (
-        <motion.div
+        <div
           key={i}
           className="relative bg-[#FFA500]/20"
-          initial={{ scale: direction > 0 ? 0.5 : 1.5 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: direction > 0 ? 1.5 : 0.5 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
           style={{
             width: `${70 / columns}vmin`,
             height: `${70 / columns}vmin`,
@@ -62,22 +56,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             className="absolute bottom-0 left-0 right-0 bg-[#FFA500]"
             style={{ height: `${partialFill * 100}%` }}
           />
-        </motion.div>
+        </div>
       );
     }
 
     return (
-      <motion.div
+      <div
         key={i}
         className="relative bg-[#FFA500]"
-        initial={{ scale: direction > 0 ? 0.5 : 1.5 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: direction > 0 ? 1.5 : 0.5 }}
-        transition={{ 
-          duration: 0.5,
-          ease: "easeInOut",
-          delay: 0.03 * i // Stagger effect
-        }}
         style={{
           width: `${70 / columns}vmin`,
           height: `${70 / columns}vmin`,
@@ -90,7 +76,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {label}
           </div>
         )}
-      </motion.div>
+      </div>
     );
   });
 
@@ -102,41 +88,26 @@ export default function DotGrid({ total, remaining, percentage, description, quo
   return (
     <div className="flex flex-col items-center">
       <div style={gridContainerStyle}>
-        <motion.div 
-          className="flex justify-between items-center mb-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-        >
+        <div className="flex justify-between items-center mb-4">
           <div className="text-2xl text-white/90">
             {percentage}% left
           </div>
           <div className="text-2xl text-white/90">
             {description}
           </div>
-        </motion.div>
-        <motion.div 
+        </div>
+        <div 
           className="grid"
           style={{
             gridTemplateColumns: `repeat(${columns}, 1fr)`,
           }}
-          initial={{ scale: direction > 0 ? 0.8 : 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: direction > 0 ? 1.2 : 0.8, opacity: 0 }}
-          transition={{ duration: 0.5 }}
         >
           {dots}
-        </motion.div>
+        </div>
         {quote && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ delay: 0.5 }}
-            className="mt-4 text-white/80 text-2xl text-center font-light uppercase tracking-[0.2em] w-full"
-          >
+          <div className="mt-4 text-white/80 text-2xl text-center font-light uppercase tracking-[0.2em] w-full">
             {quote}
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
