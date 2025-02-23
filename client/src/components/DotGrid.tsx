@@ -47,7 +47,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return `${formattedDate} (${timePhrase} ${distance})`;
   };
 
-  // Get month letter if this square is part of a month name
   const getMonthLetter = (index: number): string => {
     if (view !== 'year') return '';
 
@@ -92,7 +91,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             height: squareSize,
             margin: squareMargin,
           }}
-          title={getTooltipText(i)}
         >
           {monthLetter && (
             <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
@@ -115,7 +113,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
-          <div className="absolute inset-0 bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-2 text-xs text-center">
+          <div className="absolute z-20 invisible group-hover:visible bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap -translate-y-full -top-1">
             {getTooltipText(i)}
           </div>
         </div>
@@ -132,7 +130,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           margin: squareMargin,
           opacity
         }}
-        title={getTooltipText(i)}
       >
         {monthLetter && (
           <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
@@ -145,14 +142,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               view === 'week' ? 'text-lg' : 'text-sm'
             } ${isPastTimeBlock ? 'font-normal' : 'font-bold'}`}
             style={{ 
-              textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)',
               fontFamily: 'SF Pro Display, system-ui'
             }}
           >
             {label}
           </div>
         )}
-        <div className="absolute inset-0 bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-2 text-xs text-center">
+        <div className="absolute z-20 invisible group-hover:visible bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap -translate-y-full -top-1">
           {getTooltipText(i)}
         </div>
       </div>
