@@ -59,14 +59,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             margin: squareMargin,
           }}
         >
+          {monthInitial && (
+            <div className="absolute top-1 left-1 text-black/30 text-lg font-bold">
+              {monthInitial}
+            </div>
+          )}
           {label && (
             <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
               {label}
-            </div>
-          )}
-          {monthInitial && (
-            <div className="absolute top-1 left-1 text-white/50 text-xs font-bold">
-              {monthInitial}
             </div>
           )}
           <div
@@ -88,14 +88,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           opacity
         }}
       >
+        {monthInitial && (
+          <div className="absolute top-1 left-1 text-black/30 text-lg font-bold">
+            {monthInitial}
+          </div>
+        )}
         {label && (
           <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
             {label}
-          </div>
-        )}
-        {monthInitial && (
-          <div className="absolute top-1 left-1 text-white/50 text-xs font-bold">
-            {monthInitial}
           </div>
         )}
       </div>
