@@ -15,6 +15,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
 
   // Smaller margins for daily/weekly views
   const margin = total <= 24 ? 2 : 10;
+  const squareSize = `${70 / columns}vmin`;
+  const squareMargin = `${margin / columns}vmin`;
 
   const getLabel = (index: number): string => {
     if (view === 'week') {
@@ -26,41 +28,37 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return '';
   };
 
-  const getLabelStyle = (viewType: 'week' | 'day') => {
-    const baseStyle = "absolute top-1 left-1 text-black/30 font-bold";
-    return viewType === 'week'
-      ? `${baseStyle} text-lg`
-      : `${baseStyle} text-sm`;
-  };
-
   // Calculate month separator positions for year view
   const getMonthData = () => {
     if (view !== 'year') return [];
 
     const monthData = [];
-    let dayCount = 0;
-    const startDate = startOfYear(new Date());
+    let cumulativeDays = 0;
+    const currentDate = new Date(2025, 0, 1); // Start with January 2025
 
     // Calculate positions for each month
     for (let month = 0; month < 12; month++) {
-      const daysInCurrentMonth = getDaysInMonth(addMonths(startDate, month));
-      dayCount += daysInCurrentMonth;
+      const daysInMonth = getDaysInMonth(currentDate);
+      cumulativeDays += daysInMonth;
 
-      if (month < 11) { // Don't add separator after December
-        const position = dayCount - 1; // Position at the last day of current month
-        const row = Math.floor(position / columns);
-        const col = position % columns;
-        const monthName = format(addMonths(startDate, month + 1), 'MMM');
+      // Don't add separator after December
+      if (month < 11) {
+        const lastDayPosition = cumulativeDays - 1;
+        const row = Math.floor(lastDayPosition / columns);
+        const col = lastDayPosition % columns;
 
         monthData.push({
-          position,
+          position: lastDayPosition,
           row,
           col,
           isEndOfRow: col === columns - 1,
-          monthName,
-          daysInMonth: daysInCurrentMonth
+          monthName: format(addMonths(currentDate, 1), 'MMM'),
+          daysInMonth
         });
       }
+
+      // Move to next month
+      currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
     return monthData;
@@ -84,13 +82,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           key={i}
           className="relative bg-[#FFA500]/20"
           style={{
-            width: `${70 / columns}vmin`,
-            height: `${70 / columns}vmin`,
-            margin: `${margin / columns}vmin`,
+            width: squareSize,
+            height: squareSize,
+            margin: squareMargin,
           }}
         >
           {label && (
-            <div className={getLabelStyle(view)}>
+            <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
               {label}
             </div>
           )}
@@ -107,14 +105,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
         key={i}
         className="relative bg-[#FFA500]"
         style={{
-          width: `${70 / columns}vmin`,
-          height: `${70 / columns}vmin`,
-          margin: `${margin / columns}vmin`,
+          width: squareSize,
+          height: squareSize,
+          margin: squareMargin,
           opacity
         }}
       >
         {label && (
-          <div className={getLabelStyle(view)}>
+          <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
             {label}
           </div>
         )}
@@ -122,17 +120,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     );
   });
 
-  // Calculate grid container width based on squares
-  const gridContainerStyle = {
-    width: `${(70 + margin * 2) * columns / columns}vmin`,
-  };
-
-  const squareSize = `${70 / columns}vmin`;
-  const squareMargin = `${margin / columns}vmin`;
-
   return (
     <div className="flex flex-col items-center">
-      <div style={gridContainerStyle}>
+      <div style={{ width: `${(70 + margin * 2) * columns / columns}vmin` }}>
         <div className="flex justify-between items-center mb-4">
           <div className="text-2xl text-white/90">
             {percentage}% left
