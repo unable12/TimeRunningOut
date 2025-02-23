@@ -153,7 +153,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                     width: separator.isEndOfRow 
                       ? '100%' 
                       : `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`,
-                    top: `calc(${separator.row * 100 / columns}% - ${squareMargin})`,
+                    top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
                     left: 0
                   }}
                 />
@@ -164,9 +164,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                     className="absolute bg-[#262626]"
                     style={{
                       width: '1px',
-                      height: `calc(${100 / columns}% + ${squareMargin} * 2)`,
-                      top: `calc(${separator.row * 100 / columns}% - ${squareMargin})`,
-                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`
+                      height: `calc(${100 / columns}% + ${squareMargin})`,
+                      top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
+                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
                     }}
                   />
                 )}
@@ -177,9 +177,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
                     className="absolute bg-[#262626]"
                     style={{
                       height: '1px',
-                      width: `calc(100% - ${((separator.col + 1) * 100 / columns)}%)`,
-                      top: `calc(${(separator.row + 1) * 100 / columns}% - ${squareMargin})`,
-                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`
+                      width: `calc(100% - ${((separator.col + 1) * 100 / columns)}% - ${squareMargin} / 2)`,
+                      top: `calc(${(separator.row + 2) * 100 / columns}% + ${squareMargin} / 2)`,
+                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
                     }}
                   />
                 )}
