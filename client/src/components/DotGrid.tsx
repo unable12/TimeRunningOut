@@ -29,15 +29,15 @@ export default function DotGrid({ total, remaining, percentage, description, quo
   const getLabelStyle = (viewType: 'week' | 'day') => {
     const baseStyle = "absolute top-1 left-1 text-black/30 font-bold";
     return viewType === 'week'
-      ? `${baseStyle} text-lg` // 70% larger for week view
-      : `${baseStyle} text-sm`; // Original size for day view
+      ? `${baseStyle} text-lg`
+      : `${baseStyle} text-sm`;
   };
 
   // Calculate month separator positions for year view
-  const getMonthSeparators = () => {
+  const getMonthData = () => {
     if (view !== 'year') return [];
 
-    const separators = [];
+    const monthData = [];
     let currentPosition = 0;
     const startDate = startOfYear(new Date());
 
@@ -48,19 +48,21 @@ export default function DotGrid({ total, remaining, percentage, description, quo
       if (month < 11) { // Don't add separator after December
         const row = Math.floor((currentPosition - 1) / columns);
         const col = (currentPosition - 1) % columns;
+        const monthName = format(addMonths(startDate, month + 1), 'MMM');
 
-        separators.push({
+        monthData.push({
           row,
           col,
-          isEndOfRow: col === columns - 1
+          isEndOfRow: col === columns - 1,
+          monthName
         });
       }
     }
 
-    return separators;
+    return monthData;
   };
 
-  const monthSeparators = getMonthSeparators();
+  const monthData = getMonthData();
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
@@ -143,43 +145,55 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             }}
           >
             {dots}
-            {view === 'year' && monthSeparators.map((separator, index) => (
+            {view === 'year' && monthData.map((data, index) => (
               <div key={`separator-${index}`} className="absolute" style={{ zIndex: 1 }}>
-                {/* Horizontal line at the top of the row */}
+                {/* Month name label */}
+                <div
+                  className="absolute text-white/30 text-xs"
+                  style={{
+                    top: `calc(${(data.row + 1) * 100 / columns}% - 1rem)`,
+                    left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
+                    transform: 'translateX(-50%)',
+                  }}
+                >
+                  {data.monthName}
+                </div>
+
+                {/* Horizontal line at the bottom of the row */}
                 <div
                   className="absolute bg-white/30"
                   style={{
                     height: '1px',
-                    width: separator.isEndOfRow 
+                    width: data.isEndOfRow 
                       ? '100%' 
-                      : `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`,
-                    top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
+                      : `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin})`,
+                    top: `calc(${(data.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
                     left: 0
                   }}
                 />
 
                 {/* Vertical drop if month ends mid-row */}
-                {!separator.isEndOfRow && (
+                {!data.isEndOfRow && (
                   <div
                     className="absolute bg-white/30"
                     style={{
                       width: '1px',
                       height: `calc(${100 / columns}% + ${squareMargin})`,
-                      top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
-                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
+                      top: `calc(${(data.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
+                      left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
                     }}
                   />
                 )}
 
                 {/* Horizontal line on next row if month ends mid-row */}
-                {!separator.isEndOfRow && (
+                {!data.isEndOfRow && (
                   <div
                     className="absolute bg-white/30"
                     style={{
                       height: '1px',
-                      width: `calc(100% - ${((separator.col + 1) * 100 / columns)}% - ${squareMargin} / 2)`,
-                      top: `calc(${(separator.row + 2) * 100 / columns}% + ${squareMargin} / 2)`,
-                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
+                      width: `calc(100% - ${((data.col + 1) * 100 / columns)}% - ${squareMargin} / 2)`,
+                      top: `calc(${(data.row + 2) * 100 / columns}% + ${squareMargin} / 2)`,
+                      left: `calc(${(data.col + 1) * 100 / columns}% + ${squareMargin} / 2)`
                     }}
                   />
                 )}
