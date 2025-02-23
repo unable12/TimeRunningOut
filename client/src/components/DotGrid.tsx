@@ -32,7 +32,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     // Array of cumulative days before each month in 2025
     const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-                       'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+                     'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
     // Find if we're at the start of a month
     const monthIndex = monthStarts.findIndex((start, i) => {
