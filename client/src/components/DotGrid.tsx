@@ -60,7 +60,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           }}
         >
           {monthInitial && (
-            <div className="absolute inset-0 flex items-center justify-center text-black/30 text-lg font-bold">
+            <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
               {monthInitial}
             </div>
           )}
@@ -89,7 +89,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
         }}
       >
         {monthInitial && (
-          <div className="absolute inset-0 flex items-center justify-center text-black/30 text-lg font-bold">
+          <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
             {monthInitial}
           </div>
         )}
