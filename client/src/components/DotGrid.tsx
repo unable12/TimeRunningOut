@@ -71,11 +71,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             margin: squareMargin,
           }}
         >
-          {label && (
-            <div className={`absolute top-1 left-1 text-black font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
-              {label}
-            </div>
-          )}
           {monthLetter && (
             <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
               {monthLetter}
@@ -85,6 +80,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             className="absolute bottom-0 left-0 right-0 bg-[#FFA500]"
             style={{ height: `${partialFill * 100}%` }}
           />
+          {label && (
+            <div
+              className={`absolute top-1 left-1 text-black font-bold z-10 ${view === 'week' ? 'text-lg' : 'text-sm'}`}
+              style={{ textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)' }}
+            >
+              {label}
+            </div>
+          )}
         </div>
       );
     }
