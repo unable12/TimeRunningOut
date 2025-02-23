@@ -48,7 +48,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           }}
         >
           {label && (
-            <div className="absolute inset-0 flex items-center justify-center text-[#FFA500]/40 text-xs font-light">
+            <div className="absolute top-1 left-1 text-black/30 text-sm font-medium">
               {label}
             </div>
           )}
@@ -72,7 +72,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
         }}
       >
         {label && (
-          <div className="absolute inset-0 flex items-center justify-center text-[#FFA500]/40 text-xs font-light">
+          <div className="absolute top-1 left-1 text-black/30 text-sm font-medium">
             {label}
           </div>
         )}
