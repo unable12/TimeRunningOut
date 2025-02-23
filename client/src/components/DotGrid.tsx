@@ -113,7 +113,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
-          <div className="absolute z-20 invisible group-hover:visible bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap -translate-y-full -top-1">
+          <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
             {getTooltipText(i)}
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {label}
           </div>
         )}
-        <div className="absolute z-20 invisible group-hover:visible bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap -translate-y-full -top-1">
+        <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
           {getTooltipText(i)}
         </div>
       </div>
