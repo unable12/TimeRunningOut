@@ -1,4 +1,5 @@
 import { format, addDays, addHours, formatDistanceToNow, isFuture } from 'date-fns';
+import { useState } from 'react';
 
 interface DotGridProps {
   total: number;
@@ -10,6 +11,9 @@ interface DotGridProps {
 }
 
 export default function DotGrid({ total, remaining, percentage, description, quote, view }: DotGridProps) {
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   const columns = total === 24 ? 6 : Math.ceil(Math.sqrt(total));
   const margin = total <= 24 ? 2 : 10;
   const squareSize = `${70 / columns}vmin`;
@@ -68,6 +72,12 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return '';
   };
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (hoveredIndex !== null) {
+      setTooltipPos({ x: e.clientX, y: e.clientY });
+    }
+  };
+
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
     const partialSquareIndex = total - Math.floor(remaining) - 1;
@@ -91,6 +101,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             height: squareSize,
             margin: squareMargin,
           }}
+          onMouseEnter={() => setHoveredIndex(i)}
+          onMouseLeave={() => setHoveredIndex(null)}
         >
           {monthLetter && (
             <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
@@ -113,9 +125,6 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
-          <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white !opacity-100 px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
-            {getTooltipText(i)}
-          </div>
         </div>
       );
     }
@@ -129,6 +138,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           height: squareSize,
           margin: squareMargin,
         }}
+        onMouseEnter={() => setHoveredIndex(i)}
+        onMouseLeave={() => setHoveredIndex(null)}
       >
         <div 
           className="absolute inset-0 bg-[#FFA500]"
@@ -151,15 +162,15 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {label}
           </div>
         )}
-        <div className="absolute z-20 invisible group-hover:visible bg-black/90 text-white !opacity-100 px-3 py-2 rounded text-sm whitespace-nowrap -translate-y-full -top-2 shadow-lg backdrop-blur-sm">
-          {getTooltipText(i)}
-        </div>
       </div>
     );
   });
 
   return (
-    <div className="flex flex-col items-center">
+    <div 
+      className="flex flex-col items-center"
+      onMouseMove={handleMouseMove}
+    >
       <div style={{ width: `${(70 + margin * 2) * columns / columns}vmin` }}>
         <div className="flex justify-between items-center mb-4">
           <div className="text-2xl text-white/90">
@@ -178,6 +189,17 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           >
             {dots}
           </div>
+          {hoveredIndex !== null && (
+            <div 
+              className="fixed z-50 bg-black/90 text-white !opacity-100 px-3 py-2 rounded text-sm whitespace-nowrap shadow-lg backdrop-blur-sm pointer-events-none"
+              style={{
+                left: `${tooltipPos.x + 10}px`,
+                top: `${tooltipPos.y - 30}px`,
+              }}
+            >
+              {getTooltipText(hoveredIndex)}
+            </div>
+          )}
         </div>
         {quote && (
           <div className="mt-4 text-white/80 text-2xl text-center font-light uppercase tracking-[0.2em] w-full">
