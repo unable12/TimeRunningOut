@@ -31,7 +31,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
 
     // Array of cumulative days before each month in 2025
     const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-    const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+    const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
                        'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
     // Find if we're at the start of a month
@@ -77,7 +77,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             </div>
           )}
           {label && (
-            <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
+            <div className={`absolute top-1 left-1 text-black font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
               {label}
             </div>
           )}
@@ -106,7 +106,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           </div>
         )}
         {label && (
-          <div className={`absolute top-1 left-1 text-black/30 font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
+          <div className={`absolute top-1 left-1 text-black font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
             {label}
           </div>
         )}
