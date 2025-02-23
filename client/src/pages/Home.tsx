@@ -24,26 +24,26 @@ export default function Home() {
 
     if (Math.abs(delta) > 50) {
       const currentIndex = views.indexOf(currentView);
-      if (delta > 0 && currentIndex < views.length - 1) {
-        setCurrentView(views[currentIndex + 1]);
+      if (delta > 0) { // Swipe left
+        setCurrentView(currentIndex === views.length - 1 ? views[0] : views[currentIndex + 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
-      } else if (delta < 0 && currentIndex > 0) {
-        setCurrentView(views[currentIndex - 1]);
+      } else { // Swipe right
+        setCurrentView(currentIndex === 0 ? views[views.length - 1] : views[currentIndex - 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       }
     }
     setIsDragging(false);
   };
 
-  // Handle keyboard navigation
+  // Handle keyboard navigation with infinite loop
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const currentIndex = views.indexOf(currentView);
-      if (event.key === 'ArrowLeft' && currentIndex > 0) {
-        setCurrentView(views[currentIndex - 1]);
+      if (event.key === 'ArrowLeft') {
+        setCurrentView(currentIndex === 0 ? views[views.length - 1] : views[currentIndex - 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
-      } else if (event.key === 'ArrowRight' && currentIndex < views.length - 1) {
-        setCurrentView(views[currentIndex + 1]);
+      } else if (event.key === 'ArrowRight') {
+        setCurrentView(currentIndex === views.length - 1 ? views[0] : views[currentIndex + 1]);
         if (window.navigator.vibrate) window.navigator.vibrate(50);
       }
     };
