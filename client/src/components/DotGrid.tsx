@@ -71,14 +71,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             margin: squareMargin,
           }}
         >
-          {monthLetter && (
-            <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
-              {monthLetter}
-            </div>
-          )}
           {label && (
             <div className={`absolute top-1 left-1 text-black font-bold ${view === 'week' ? 'text-lg' : 'text-sm'}`}>
               {label}
+            </div>
+          )}
+          {monthLetter && (
+            <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
+              {monthLetter}
             </div>
           )}
           <div
