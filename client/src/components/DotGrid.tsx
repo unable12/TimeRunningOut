@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { format } from 'date-fns';
 
 interface DotGridProps {
   total: number;
@@ -17,9 +18,20 @@ export default function DotGrid({ total, remaining, percentage, description, quo
   // Smaller margins for daily/weekly views
   const margin = total <= 24 ? 2 : 10;
 
+  const getLabel = (index: number): string => {
+    if (view === 'week') {
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      return days[index];
+    } else if (view === 'day') {
+      return format(new Date().setHours(index), 'HH:00');
+    }
+    return '';
+  };
+
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
     const partialSquareIndex = total - Math.floor(remaining) - 1;
+    const label = getLabel(i);
 
     let opacity = '0.2'; // default for used time
     if (i >= total - Math.floor(remaining)) {
@@ -41,6 +53,11 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             margin: `${margin / columns}vmin`,
           }}
         >
+          {label && (
+            <div className="absolute inset-0 flex items-center justify-center text-[#FFA500]/40 text-xs font-light">
+              {label}
+            </div>
+          )}
           <div 
             className="absolute bottom-0 left-0 right-0 bg-[#FFA500]"
             style={{ height: `${partialFill * 100}%` }}
@@ -52,7 +69,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return (
       <motion.div
         key={i}
-        className="bg-[#FFA500]"
+        className="relative bg-[#FFA500]"
         initial={{ scale: direction > 0 ? 0.5 : 1.5 }}
         animate={{ scale: 1 }}
         exit={{ scale: direction > 0 ? 1.5 : 0.5 }}
@@ -67,7 +84,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           margin: `${margin / columns}vmin`,
           opacity
         }}
-      />
+      >
+        {label && (
+          <div className="absolute inset-0 flex items-center justify-center text-[#FFA500]/40 text-xs font-light">
+            {label}
+          </div>
+        )}
+      </motion.div>
     );
   });
 
