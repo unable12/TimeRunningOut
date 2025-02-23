@@ -34,26 +34,33 @@ export default function DotGrid({ total, remaining, percentage, description, quo
   };
 
   // Calculate month separator positions for year view
-  const getMonthSeparatorPositions = (): number[] => {
+  const getMonthSeparators = () => {
     if (view !== 'year') return [];
 
-    const positions: number[] = [];
+    const separators = [];
     let currentPosition = 0;
-    const year = new Date().getFullYear();
     const startDate = startOfYear(new Date());
 
     for (let month = 0; month < 12; month++) {
       const daysInMonth = getDaysInMonth(addMonths(startDate, month));
       currentPosition += daysInMonth;
+
       if (month < 11) { // Don't add separator after December
-        positions.push(currentPosition);
+        const row = Math.floor((currentPosition - 1) / columns);
+        const col = (currentPosition - 1) % columns;
+
+        separators.push({
+          row,
+          col,
+          isEndOfRow: col === columns - 1
+        });
       }
     }
 
-    return positions;
+    return separators;
   };
 
-  const monthSeparators = getMonthSeparatorPositions();
+  const monthSeparators = getMonthSeparators();
 
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
@@ -114,6 +121,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     width: `${(70 + margin * 2) * columns / columns}vmin`,
   };
 
+  const squareSize = `${70 / columns}vmin`;
+  const squareMargin = `${margin / columns}vmin`;
+
   return (
     <div className="flex flex-col items-center">
       <div style={gridContainerStyle}>
@@ -133,18 +143,47 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             }}
           >
             {dots}
-            {view === 'year' && monthSeparators.map((position, index) => (
-              <div
-                key={`separator-${index}`}
-                className="absolute w-full bg-[#262626]"
-                style={{
-                  height: '1px',
-                  top: `${(position / columns) * (70 + margin * 2) / columns}vmin`,
-                  left: 0,
-                  right: 0,
-                  zIndex: 1
-                }}
-              />
+            {view === 'year' && monthSeparators.map((separator, index) => (
+              <div key={`separator-${index}`} className="absolute" style={{ zIndex: 1 }}>
+                {/* Horizontal line at the top of the row */}
+                <div 
+                  className="absolute bg-[#262626]"
+                  style={{
+                    height: '1px',
+                    width: separator.isEndOfRow 
+                      ? '100%' 
+                      : `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`,
+                    top: `calc(${separator.row * 100 / columns}% - ${squareMargin})`,
+                    left: 0
+                  }}
+                />
+
+                {/* Vertical drop if month ends mid-row */}
+                {!separator.isEndOfRow && (
+                  <div 
+                    className="absolute bg-[#262626]"
+                    style={{
+                      width: '1px',
+                      height: `calc(${100 / columns}% + ${squareMargin} * 2)`,
+                      top: `calc(${separator.row * 100 / columns}% - ${squareMargin})`,
+                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`
+                    }}
+                  />
+                )}
+
+                {/* Horizontal line on next row if month ends mid-row */}
+                {!separator.isEndOfRow && (
+                  <div 
+                    className="absolute bg-[#262626]"
+                    style={{
+                      height: '1px',
+                      width: `calc(100% - ${((separator.col + 1) * 100 / columns)}%)`,
+                      top: `calc(${(separator.row + 1) * 100 / columns}% - ${squareMargin})`,
+                      left: `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`
+                    }}
+                  />
+                )}
+              </div>
             ))}
           </div>
         </div>
