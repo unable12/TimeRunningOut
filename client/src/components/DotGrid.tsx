@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, addDays, addHours, formatDistanceToNow, isFuture } from 'date-fns';
 
 interface DotGridProps {
   total: number;
@@ -25,16 +25,36 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return '';
   };
 
+  const getDateForIndex = (index: number): Date => {
+    const now = new Date();
+    if (view === 'year') {
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      return addDays(startOfYear, index);
+    } else if (view === 'week') {
+      const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1);
+      return addDays(startOfWeek, index);
+    } else {
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0);
+      return addHours(startOfDay, index);
+    }
+  };
+
+  const getTooltipText = (index: number): string => {
+    const date = getDateForIndex(index);
+    const formattedDate = format(date, view === 'day' ? 'HH:mm, MMM d' : 'MMM d, yyyy');
+    const timePhrase = isFuture(date) ? 'will be in' : 'was';
+    const distance = formatDistanceToNow(date, { addSuffix: true });
+    return `${formattedDate} (${timePhrase} ${distance})`;
+  };
+
   // Get month letter if this square is part of a month name
   const getMonthLetter = (index: number): string => {
     if (view !== 'year') return '';
 
-    // Array of cumulative days before each month in 2025
     const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
                      'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
-    // Find if we're at the start of a month
     const monthIndex = monthStarts.findIndex((start, i) => {
       const nextStart = monthStarts[i + 1] || 366;
       return index >= start && index < nextStart;
@@ -66,12 +86,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
       return (
         <div
           key={i}
-          className="relative bg-[#FFA500]/20"
+          className="relative bg-[#FFA500]/20 group"
           style={{
             width: squareSize,
             height: squareSize,
             margin: squareMargin,
           }}
+          title={getTooltipText(i)}
         >
           {monthLetter && (
             <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
@@ -94,6 +115,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
+          <div className="absolute inset-0 bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-2 text-xs text-center">
+            {getTooltipText(i)}
+          </div>
         </div>
       );
     }
@@ -101,13 +125,14 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return (
       <div
         key={i}
-        className="relative bg-[#FFA500]"
+        className="relative bg-[#FFA500] group"
         style={{
           width: squareSize,
           height: squareSize,
           margin: squareMargin,
           opacity
         }}
+        title={getTooltipText(i)}
       >
         {monthLetter && (
           <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold">
@@ -127,6 +152,9 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {label}
           </div>
         )}
+        <div className="absolute inset-0 bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-2 text-xs text-center">
+          {getTooltipText(i)}
+        </div>
       </div>
     );
   });
