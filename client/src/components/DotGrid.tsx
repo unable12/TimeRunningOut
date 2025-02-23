@@ -26,6 +26,13 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     return '';
   };
 
+  const getLabelStyle = (viewType: 'week' | 'day') => {
+    const baseStyle = "absolute top-1 left-1 text-black/30 font-bold";
+    return viewType === 'week' 
+      ? `${baseStyle} text-lg` // 70% larger for week view
+      : `${baseStyle} text-sm`; // Original size for day view
+  };
+
   const dots = Array.from({ length: total }).map((_, i) => {
     const lastSquareIndex = total - Math.ceil(remaining);
     const partialSquareIndex = total - Math.floor(remaining) - 1;
@@ -48,7 +55,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           }}
         >
           {label && (
-            <div className="absolute top-1 left-1 text-black/30 text-sm font-medium">
+            <div className={getLabelStyle(view)}>
               {label}
             </div>
           )}
@@ -72,7 +79,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
         }}
       >
         {label && (
-          <div className="absolute top-1 left-1 text-black/30 text-sm font-medium">
+          <div className={getLabelStyle(view)}>
             {label}
           </div>
         )}
