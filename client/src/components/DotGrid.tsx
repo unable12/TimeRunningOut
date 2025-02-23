@@ -55,6 +55,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
     const label = getLabel(i);
     const monthLetter = getMonthLetter(i);
     const isCurrentTimeBlock = i === partialSquareIndex;
+    const isPastTimeBlock = i < partialSquareIndex;
 
     let opacity = '0.2'; // default for used time
     if (i >= total - Math.floor(remaining)) {
@@ -118,7 +119,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           <div
             className={`absolute top-1 left-1 text-black z-10 ${
               view === 'week' ? 'text-lg' : 'text-sm'
-            } font-bold`}
+            } ${isPastTimeBlock ? 'font-normal' : 'font-bold'}`}
             style={{ 
               textShadow: '0px 0px 1px rgba(255, 255, 255, 0.5)',
               fontFamily: 'SF Pro Display, system-ui'
