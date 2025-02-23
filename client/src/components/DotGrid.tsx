@@ -28,7 +28,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
 
   const getLabelStyle = (viewType: 'week' | 'day') => {
     const baseStyle = "absolute top-1 left-1 text-black/30 font-bold";
-    return viewType === 'week' 
+    return viewType === 'week'
       ? `${baseStyle} text-lg` // 70% larger for week view
       : `${baseStyle} text-sm`; // Original size for day view
   };
@@ -88,7 +88,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
               {label}
             </div>
           )}
-          <div 
+          <div
             className="absolute bottom-0 left-0 right-0 bg-[#FFA500]"
             style={{ height: `${partialFill * 100}%` }}
           />
@@ -136,7 +136,7 @@ export default function DotGrid({ total, remaining, percentage, description, quo
           </div>
         </div>
         <div className="relative">
-          <div 
+          <div
             className="grid relative"
             style={{
               gridTemplateColumns: `repeat(${columns}, 1fr)`,
@@ -146,12 +146,12 @@ export default function DotGrid({ total, remaining, percentage, description, quo
             {view === 'year' && monthSeparators.map((separator, index) => (
               <div key={`separator-${index}`} className="absolute" style={{ zIndex: 1 }}>
                 {/* Horizontal line at the top of the row */}
-                <div 
-                  className="absolute bg-[#262626]"
+                <div
+                  className="absolute bg-white/30"
                   style={{
                     height: '1px',
-                    width: separator.isEndOfRow 
-                      ? '100%' 
+                    width: separator.isEndOfRow
+                      ? '100%'
                       : `calc(${(separator.col + 1) * 100 / columns}% + ${squareMargin})`,
                     top: `calc(${(separator.row + 1) * 100 / columns}% + ${squareMargin} / 2)`,
                     left: 0
@@ -160,8 +160,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
 
                 {/* Vertical drop if month ends mid-row */}
                 {!separator.isEndOfRow && (
-                  <div 
-                    className="absolute bg-[#262626]"
+                  <div
+                    className="absolute bg-white/30"
                     style={{
                       width: '1px',
                       height: `calc(${100 / columns}% + ${squareMargin})`,
@@ -173,8 +173,8 @@ export default function DotGrid({ total, remaining, percentage, description, quo
 
                 {/* Horizontal line on next row if month ends mid-row */}
                 {!separator.isEndOfRow && (
-                  <div 
-                    className="absolute bg-[#262626]"
+                  <div
+                    className="absolute bg-white/30"
                     style={{
                       height: '1px',
                       width: `calc(100% - ${((separator.col + 1) * 100 / columns)}% - ${squareMargin} / 2)`,
